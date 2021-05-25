@@ -1,0 +1,3 @@
+[submodule "Face-Yaw-Roll-Pitch-from-Pose-Estimation-using-OpenCV"]
+	path = Face-Yaw-Roll-Pitch-from-Pose-Estimation-using-OpenCV
+	url = https://github.com/jerryhouuu/Face-Yaw-Roll-Pitch-from-Pose-Estimation-using-OpenCV.git
