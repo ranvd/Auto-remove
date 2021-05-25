@@ -4,3 +4,6 @@
 [submodule "face-alignment"]
 	path = face-alignment
 	url = https://github.com/1adrianb/face-alignment.git
+[submodule "head-pose-estimation"]
+	path = head-pose-estimation
+	url = https://github.com/yinguobing/head-pose-estimation.git
