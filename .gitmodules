@@ -1,0 +1,3 @@
+[submodule "omnimatte"]
+	path = omnimatte
+	url = https://github.com/erikalu/omnimatte.git
