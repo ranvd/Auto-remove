@@ -1,0 +1,29 @@
+<!--
+g：g 裡面儲存的資料是預設可以在 html 模板中直接使用，
+url_for() 也可以
+get_flashed_messages()：原本前面使用 `flash()` 的方式傳送的 error。用這個函示可以叫出來
+-->
+<!doctype html>
+<title>{% block title %}{% endblock %} - Flaskr</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<nav>
+    <h1>MyAPP</h1>
+    <ul>
+        {% if g.user %}
+        <li><span>{{ g.user['username'] }}</span>
+        <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+            {% else %}
+        <li><a href="{{ url_for('auth.register') }}">Register</a>
+        <li><a href="{{ url_for('auth.login') }}">Log In</a>
+            {% endif %}
+    </ul>
+</nav>
+<section class="content">
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+</section>
