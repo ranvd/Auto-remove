@@ -31,7 +31,7 @@ def create_app(Config_FileName = "config.json"):
 
     @app.route("/index")
     def index():
-        return render_template('index.html')
+        return render_template('index.html', videos=[1,2,3,4,5,6,7,8,9,10], folders=["Folder1", "Folder2", "origin", "matting+styleTF"])
 
     
 
