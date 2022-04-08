@@ -5,8 +5,10 @@ from flask_bootstrap import Bootstrap
 import json
 
 def create_app(Config_FileName = None):
+    '''
+    建立整個完整的網站，裡面會呼叫 blueprint 與其他輔助 function。
+    '''
     app = Flask(__name__, instance_relative_config=True)
-    Bootstrap(app)
 
     # try load configure from instance/config.py
     app.config.from_mapping(
@@ -26,14 +28,18 @@ def create_app(Config_FileName = None):
         print(conf, " : ", app.config[conf])
     '''
 
+    # database 功能
     from . import db
     db.init_app(app)
 
+    # 登入登出與驗證功能
+    from . import auth
+    app.register_blueprint(auth.bp)
 
-
-    @app.route("/")
-    def index():
-        return render_template('index.html', videos=[1,2,3,4,5,6,7,8,9,10], folders=["Folder1", "Folder2", "origin", "matting+styleTF"])
+    from . import main_bp
+    app.register_blueprint(main_bp.bp)
+    app.add_url_rule('/', endpoint='main.index') 
+    # 上面這行在這裡其實沒有意義，只是提醒index在main_bp裡
     
     @app.route("/sibar")
     def sidebar():
