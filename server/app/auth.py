@@ -21,6 +21,8 @@ TODO: 下面註冊後直接跳向登入頁面，應該可以改成直接登入�
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
+        print("DEBUGGGING")
+        print(request.form)
         username = request.form['username']
         password = request.form['password']
         db = get_db()
@@ -71,8 +73,8 @@ def login():
         
         if error is None:
             session.clear()
-            session['user_id'] = user['id'] # 這裡完全幫你處理好把 cookie 送到 client 的功能
-            return redirect(url_for('index'))
+            session['user_id'] = user['u_id'] # 這裡完全幫你處理好把 cookie 送到 client 的功能
+            return redirect(url_for('main.index'))
         
         flash(error)
     return render_template('auth/login.html')
@@ -85,7 +87,7 @@ def login():
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
 
 
 '''

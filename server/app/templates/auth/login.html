@@ -31,20 +31,20 @@
 
   <main style="height: 100vh; width: 100vw;">
     <div class="d-flex bg-highlight justify-content-center h-100">
-      <div class="d-flex align-items-center w-25">
+      <div class="d-flex flex-column justify-content-center align-items-center w-25">
 
-        <form class="w-100">
+        <form class="w-100" method="post">
           <svg class="bi me-2" width="40" height="32">
             <use xlink:href="#bootstrap" />
           </svg>
           <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
           <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <input name="username" type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>
           </div>
           <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
             <label for="floatingPassword">Password</label>
           </div>
 
@@ -53,10 +53,11 @@
               <input type="checkbox" value="remember-me"> Remember me
             </label>
           </div>
-          <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+          <button class="w-50 btn btn-lg btn-primary" type="submit">Sign in</button>
         </form>
+        <hr>
+        <a class="w-25 btn btn-lg btn-primary" href="{{url_for('auth.register')}}">Sign up</a>
       </div>
-
     </div>
   </main>
 
