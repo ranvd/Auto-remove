@@ -14,10 +14,13 @@ CREATE TABLE user (
 CREATE TABLE video (
   v_id INTEGER PRIMARY KEY AUTOINCREMENT,
   v_name TEXT NOT NULL,
+  vsa_name TEXT NOT NULL,
+  b_name TEXT NOT NULL,
+  bsa_name TEXT NOT NULL,
   author_id INTEGER NOT NULL,
   folder_name TEXT NOT NULL,
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (author_id) REFERENCES user (id)
+  FOREIGN KEY (author_id) REFERENCES user (u_id)
 );
 
 CREATE TABLE folder (
@@ -25,5 +28,5 @@ CREATE TABLE folder (
   f_name TEXT NOT NULL,
   author_id INTEGER NOT NULL,
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (author_id) REFERENCES user (id)
+  FOREIGN KEY (author_id) REFERENCES user (u_id)
 );

@@ -48,6 +48,12 @@
             <label for="floatingPassword">Password</label>
           </div>
 
+          <hr>
+
+          {% for message in get_flashed_messages() %}
+          <div class="flash text-danger">{{ message }}</div>
+          {% endfor %}
+
           <div class="checkbox mb-3">
             <label>
               <input type="checkbox" value="remember-me"> Remember me

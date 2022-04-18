@@ -4,6 +4,8 @@ from flask import Flask, url_for, render_template
 from flask_bootstrap import Bootstrap
 import json
 
+
+
 def create_app(Config_FileName = None):
     '''
     建立整個完整的網站，裡面會呼叫 blueprint 與其他輔助 function。
@@ -14,7 +16,7 @@ def create_app(Config_FileName = None):
     app.config.from_mapping(
         SECRET_KEY = "dev",
         DATABASE = os.path.join(app.instance_path, 'flaskr.sqlite'),
-        UPLOAD_FOLDER = "UPLOAD_FOLDER"
+        UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
     )
 
     if(Config_FileName):
@@ -23,6 +25,7 @@ def create_app(Config_FileName = None):
         except:
             app.logger.error("Config file must be py format")
             sys.exit("Error occur")
+
     '''
     for conf in app.config:
         print(conf, " : ", app.config[conf])
@@ -40,7 +43,13 @@ def create_app(Config_FileName = None):
     app.register_blueprint(main_bp.bp)
     app.add_url_rule('/', endpoint='main.index') 
     # 上面這行在這裡其實沒有意義，只是提醒index在main_bp裡
+
+    @app.route("/newindex")
+    def newindex():
+        print(os.curdir)
+        return os.getcwd()
     
+    '''
     @app.route("/sibar")
     def sidebar():
         return render_template('album.html')
@@ -48,8 +57,8 @@ def create_app(Config_FileName = None):
     @app.route("/album")
     def album():
         return render_template('sidebar.html')
-
-
+    '''
+    
     return app
 
 '''

@@ -31,7 +31,7 @@
 
   <main style="height: 100vh; width: 100vw;">
     <div class="d-flex bg-highlight justify-content-center h-100">
-      <div class="d-flex align-items-center w-25">
+      <div class="d-flex flex-column justify-content-center align-items-center w-25">
 
         <form class="w-100" method="post" action="">
           <svg class="bi me-2" width="40" height="32">
@@ -52,8 +52,15 @@
             <label for="floatingPassword">Confirm</label>
           </div>
 
-          <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+          <hr>
+          {% for message in get_flashed_messages() %}
+          <div class="flash text-danger">{{ message }}</div>
+          {% endfor %}
+
+          <button class="w-50 btn btn-lg btn-primary" type="submit">Sign up</button>
         </form>
+        <hr>
+        <a class="w-25 btn btn-lg btn-primary" href="{{url_for('auth.login')}}">Sign in</a>
       </div>
 
     </div>
