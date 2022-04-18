@@ -1,11 +1,9 @@
 '''
 網站所有主要功能
 '''
-from crypt import methods
 import functools
 import random
 import os
-import hashlib
 import time
 from statistics import mode
 from flask import (
