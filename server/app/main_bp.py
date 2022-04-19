@@ -22,7 +22,7 @@ def index():
     if (g.user):
         return redirect(url_for('main.profile', name=g.user['username']))
     
-    return render_template('Nindex.html')
+    return render_template('index.html')
 
 
 @bp.route("/<string:name>", methods=('GET', 'POST'))
@@ -64,7 +64,7 @@ def profile(name):
     video_list = GetUserVideo(g.user['u_id'])
     video_list = [(dict(v)['v_name'], dict(v)['vsa_name']) for v in video_list]
     print(video_list)
-    return render_template('index.html', folders=folder_list, videos=video_list)
+    return render_template('PCindex.html', folders=folder_list, videos=video_list, models=AI_MODEL)
 
 
 @bp.route("/<string:name>/ceate_folder", methods=('GET', 'POST'))
@@ -108,8 +108,9 @@ def create_new_folder(name):
 
 @bp.route("/<string:name>/moving_video", methods=("GET", "POST"))
 @login_required
-def moving_video(name, folder):
-    return
+def moving_video(name):
+    
+    return redirect(url_for('main.profile', name=g.user['username']))
 
 
 @bp.route("/<string:name>/<string:folder>")
@@ -120,14 +121,14 @@ def change_folder(name, folder):
     
     video_list = GetUserVideo(g.user['u_id'], folder)
     video_list = [dict(v)['v_name'] for v in video_list]
-    return render_template('index.html', folders=folder_list, videos=video_list)
+    return render_template('PCindex.html', folders=folder_list, videos=video_list)
 
 
 @bp.route("/<string:name>/<string:folder>")
 @login_required
 def folder(name, folder):
     current_app.logger.info('In folder function')
-    return render_template('index.html')
+    return render_template('PCindex.html')
 
 
 # ------------------ utils --------------------
@@ -139,6 +140,7 @@ def GetUserFolder(u_id):
         ).fetchall()
 
 def GetUserVideo(u_id, f_id="MAIN"):
+    # TODO: 要增加folder轉換之間的條件
     db = get_db()
     return db.execute("""
         SELECT v_name, vsa_name FROM video

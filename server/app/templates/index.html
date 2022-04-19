@@ -23,7 +23,9 @@
 </head>
 
 <body>
+
   {% include 'svgutil.html' %}
+
   <main>
     <!-- sidebar 給手機 -->
     <div class="collapse collapse-horizontal" id="collapseWidthExample">
@@ -41,65 +43,42 @@
           <hr>
 
           <div class="mb-auto">
-            <div class="nav nav-pills flex-column">
-              <!-- Upload modal-->
-              <button type="button" class="text-start btn btn-primary mb-3" data-bs-toggle="modal"
-                data-bs-target="#MBUploadModal">
+            <ul class="nav nav-pills flex-column">
+              {% if g.user %}
+
+              <button onclick="document.getElementById('getFile').click()" class="text-start btn btn-primary mb-3">
                 <svg class="bi me-2" width="16" height="16">
                   <use xlink:href="#home" />
                 </svg>
                 Upload
               </button>
+              <form method="get">
+                <input name="file[]" type="file" class="d-none" id="getFile" onchange="this.form.submit();" multiple>
+              </form>
 
-              <div class="modal fade" id="MBUploadModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title text-body">Upload Video</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <form action="{{ url_for('main.profile', name=g.user)}}" method="post" enctype=multipart/form-data
-                        id="UploadData">
-                        <input type="button" id="loadFileXml" value="Video or Photo"
-                          class="text-start btn btn-primary mb-3 w-100"
-                          onclick="document.getElementById('video').click();" />
-                        <input type="file" class="d-none" id="video" name="video" multiple />
-
-                        <input type="button" id="loadFileXml" value="Background"
-                          class="text-start btn btn-primary mb-3 w-100"
-                          onclick="document.getElementById('background').click();" />
-                        <input type="file" class="d-none" id="background" name="background" multiple />
-                        <input type="submit" class="d-none" id="upload">
-                      </form>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button class="btn btn-primary" onclick="document.getElementById('upload').click()">Apply</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- New model -->
+              <!-- Button trigger modal -->
               <button type="button" class="text-start btn btn-primary mb-3" data-bs-toggle="modal"
-                data-bs-target="#MBFolderModal">
+                data-bs-target="#MobileModal">
                 <svg class="bi me-2" width="16" height="16">
                   <use xlink:href="#home" />
                 </svg>
                 New
               </button>
 
-              <div class="modal fade" id="MBFolderModal" tabindex="-1" aria-hidden="true">
+              <!-- Vertically centered modal -->
+
+              <!-- Modal -->
+
+              <div class="modal fade" id="MobileModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title text-body">Choice Your Folder Function</h5>
+                      <h5 class="modal-title text-body" id="exampleModalLabel">Choice Your Folder Function</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <form id="SelectFunction" method="get"
-                        action="{{url_for('main.create_new_folder', name=g.user)}}">
+                      <form id="SelectFunction" method="get">
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
                           <label class="form-check-label text-body" for="flexCheckDefault">
@@ -112,22 +91,19 @@
                             風格轉換
                           </label>
                         </div>
-                        <input type="submit" class="d-none" id="submit">
                       </form>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button class="btn btn-primary" onclick="document.getElementById('submit').click()">Apply</button>
+                      <input type="submit" form="SelectFunction" value="Apply" class="btn btn-primary">
                     </div>
                   </div>
                 </div>
               </div>
 
-              <hr>
-
               {% for folder in folders %}
               <li>
-                <a href="#" class="nav-link text-white">
+                <a href="#" class="text-white">
                   <svg class="bi me-2" width="16" height="16">
                     <use xlink:href="#speedometer2" />
                   </svg>
@@ -135,7 +111,35 @@
                 </a>
               </li>
               {% endfor %}
-            </div>
+
+              {% else %}
+              <div class="mb-auto">
+                <div class="nav nav-pills flex-column">
+                  <a href="{{ url_for('auth.login', name=g.user[username], folder='new') }}"
+                    class="text-start btn btn-primary mb-3">
+                    <svg class="bi me-2" width="16" height="16">
+                      <use xlink:href="#home" />
+                    </svg>
+                    Upload
+                  </a>
+
+                  <a href="{{ url_for('auth.login', name=g.user[username], folder='new') }}"
+                    class="text-start btn btn-primary mb-3">
+                    <svg class="bi me-2" width="16" height="16">
+                      <use xlink:href="#home" />
+                    </svg>
+                    New
+                  </a>
+
+                  <hr>
+                </div>
+              </div>
+              {% endif %}
+
+              <hr>
+
+
+            </ul>
           </div>
 
           <hr>
@@ -160,9 +164,9 @@
       </div>
     </div>
 
-    <!-- for PC -->
-    <div class="d-none d-lg-block h-100 w-25">
-      <div class="d-flex flex-column p-3 text-white bg-dark h-100 w-100 me-0">
+    <!-- sidebar for PC -->
+    <div style="height: 100vh" class="d-none d-lg-block">
+      <div class="d-flex flex-column p-3 text-white bg-dark h-100" style="width: 280px;">
         <div>
           <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <svg class="bi me-2" width="40" height="32">
@@ -173,100 +177,26 @@
         </div>
 
         <hr>
+
         <div class="mb-auto">
           <div class="nav nav-pills flex-column">
-            <!-- Upload modal-->
-            <button type="button" class="text-start btn btn-primary mb-3" data-bs-toggle="modal"
-              data-bs-target="#PCUploadModal">
+            <a href="{{ url_for('auth.login', name=g.user[username], folder='new') }}"
+              class="text-start btn btn-primary mb-3">
               <svg class="bi me-2" width="16" height="16">
                 <use xlink:href="#home" />
               </svg>
               Upload
-            </button>
+            </a>
 
-            <div class="modal fade" id="PCUploadModal" tabindex="-1" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title text-body">Upload Video</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <form action="{{ url_for('main.profile', name=g.user)}}" method="post" enctype=multipart/form-data
-                      id="UploadData">
-                      <input type="button" id="loadFileXml" value="Video or Photo"
-                        class="text-start btn btn-primary mb-3 w-100"
-                        onclick="document.getElementById('video').click();" />
-                      <input type="file" class="d-none" id="video" name="video" multiple />
-
-                      <input type="button" id="loadFileXml" value="Background"
-                        class="text-start btn btn-primary mb-3 w-100"
-                        onclick="document.getElementById('background').click();" />
-                      <input type="file" class="d-none" id="background" name="background" multiple />
-                      <input type="submit" class="d-none" id="upload">
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" onclick="document.getElementById('upload').click()">Apply</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- New model -->
-            <button type="button" class="text-start btn btn-primary mb-3" data-bs-toggle="modal"
-              data-bs-target="#PCFolderModal">
+            <a href="{{ url_for('auth.login', name=g.user[username], folder='new') }}"
+              class="text-start btn btn-primary mb-3">
               <svg class="bi me-2" width="16" height="16">
                 <use xlink:href="#home" />
               </svg>
               New
-            </button>
-
-            <div class="modal fade" id="PCFolderModal" tabindex="-1" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title text-body">Choice Your Folder Function</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <form action="{{url_for('main.create_new_folder', name=g.user)}}"  method="post">
-                      <div class="form-check">
-                        <input name="Matting" class="form-check-input" type="checkbox" id="flexCheckDefault" checked>
-                        <label class="form-check-label text-body" for="flexCheckDefault">
-                          Matting
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input name="StyleTransfer" class="form-check-input" type="checkbox" id="flexCheckChecked">
-                        <label class="form-check-label text-body" for="flexCheckChecked">
-                          風格轉換
-                        </label>
-                      </div>
-                      <input type="submit" class="d-none" id="new">
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" onclick="document.getElementById('new').click()">Apply</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </a>
 
             <hr>
-
-            {% for folder in folders %}
-            <li>
-              <a href="{{ url_for('main.change_folder', name=g.user['username'], folder=folder)}}" class="nav-link text-white">
-                <svg class="bi me-2" width="16" height="16">
-                  <use xlink:href="#speedometer2" />
-                </svg>
-                {{ folder }}
-              </a>
-            </li>
-            {% endfor %}
           </div>
         </div>
 
@@ -289,14 +219,13 @@
           </ul>
         </div>
       </div>
-
-
     </div>
+
 
     <!-- 右邊的內容 -->
     <div class="album w-100 bg-light overflow-auto">
       <div class="container container-md  pt-5">
-        <form class="row row-cols-auto" method="post" action="{{ url_for('main.moving_video', name=g.user['u_id']) }}">
+        <form class="row row-cols-auto" method="post">
           <!-- 手機才看的到 -->
           <div class="col-12 mb-1 d-lg-none">
             <p>
@@ -308,46 +237,20 @@
             </p>
           </div>
 
-          <div class="col-12 mb-3">
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Move
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                {% for folder in folders %}
-                <input name={{folder}} type="submit" class="dropdown-item" value={{folder}}>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-
-          {% for video in videos %}
-          <div class="col">
-            <div class="card shadow-sm">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
-                role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                <title>Placeholder</title>
-                <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{
-                  video[0] }}</text>
-              </svg>
-
-              <input type="checkbox" name="select" id={{video[1]}} value={{ video[1] }}  class="btn-check" autocomplete="off">
-              <label class="btn btn-outline-primary" for={{ video[1] }}>Select</label><br>
-            </div>
-          </div>
-          {% endfor %}
+          <p> 內容介紹: 這是一個背景去除風格轉換網站</p>
 
         </form>
       </div>
     </div>
-
-
   </main>
+
   <!--bootstrap js -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
+  <!-- custom js
+  <script src="{{ url_for('static', filename='sidebars.js') }}"></script>
+  -->
 </body>
 
 </html>
