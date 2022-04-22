@@ -30,6 +30,7 @@ def index():
 def profile(name):
     if( request.method == "POST"):
         # 處理使用者上傳資料
+        #print(request.form)
         error = None
         video = request.files['video']
         background = request.files['background']
@@ -63,7 +64,6 @@ def profile(name):
 
     video_list = GetUserVideo(g.user['u_id'])
     video_list = [(dict(v)['v_name'], dict(v)['vsa_name']) for v in video_list]
-    print(video_list)
     return render_template('PCindex.html', folders=folder_list, videos=video_list, models=AI_MODEL)
 
 
@@ -109,7 +109,12 @@ def create_new_folder(name):
 @bp.route("/<string:name>/moving_video", methods=("GET", "POST"))
 @login_required
 def moving_video(name):
-    
+    current_app.logger.info("from moving_video: {}".format(request.form))
+    Selected_video = request.form.getlist('select')
+    Moving_folder = request.form['Move']
+
+    current_app.logger.info("FROM moving_video: {}".format(Selected_video))
+    current_app.logger.info("FROM moving_video: {}".format(Moving_folder))
     return redirect(url_for('main.profile', name=g.user['username']))
 
 

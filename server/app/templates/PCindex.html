@@ -182,7 +182,7 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 {% for folder in folders %}
                 <input type="button" class="dropdown-item" value="{{folder}}" onclick="document.getElementById('{{folder}}_Folder').click()"/>
-                <input name="{{folder}}_Folder" id="{{folder}}_Folder" type="checkbox" class="d-none" value="{{folder}}_Folder" onclick="document.getElementById('Move').click()"/>
+                <input name="Move" id="{{folder}}_Folder" type="checkbox" class="d-none" value="{{folder}}_Folder" onclick="document.getElementById('Move').click()"/>
                 {% endfor %}
                 <input type="submit" id="Move" class="d-none" />
               </ul>
@@ -217,7 +217,6 @@
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
 
-  <script src="{{url_for('static', filename='micro.js')}}"></script>
 </body>
 
 </html>
