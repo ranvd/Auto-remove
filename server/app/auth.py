@@ -44,16 +44,13 @@ def register():
                     "INSERT INTO user (username, password, v_num, f_num) VALUES (?, ?, ?, ?)",
                     (username,generate_password_hash(password), 0, 1),
                 )
-                db.execute(
-                    "INSERT INTO folder (f_name, author_id) VALUES (?,?)",
-                    ("MAIN", username)
-                )
                 db.commit()
 
                 # 建立使用者資料夾
-                path = (current_app.config['UPLOAD_FOLDER'], username, "MAIN")
+                path = (current_app.config['UPLOAD_FOLDER'], username)
                 os.makedirs(os.path.join(*path, "videos"))
                 os.makedirs(os.path.join(*path, "backgrounds"))
+                os.makedirs(os.path.join(*path, "newBackground"))
 
             except Exception as Err:
                 print(Err)

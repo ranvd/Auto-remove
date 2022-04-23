@@ -16,6 +16,7 @@ def create_app(Config_FileName = None):
     app.config.from_mapping(
         SECRET_KEY = "dev",
         DATABASE = os.path.join(app.instance_path, 'flaskr.sqlite'),
+        QUEUE = os.path.join(app.instance_path, 'queue.sqlite'),
         UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
     )
 

@@ -4,7 +4,7 @@ db = sqlite3.connect('flaskr.sqlite')
 
 cur = db.cursor()
 folders = cur.execute("""
-SELECT * FROM folder
+SELECT * FROM newbackground
 """).fetchall()
 
 videos = cur.execute(
@@ -13,6 +13,14 @@ videos = cur.execute(
 
 user = cur.execute(
     "SELECT * FROM user"
+).fetchall()
+
+
+queue = sqlite3.connect('queue.sqlite')
+cur = queue.cursor()
+
+Q = cur.execute(
+    "SELECT * FROM Queue"
 ).fetchall()
 
 
@@ -28,3 +36,8 @@ for v in videos:
 print("FOLDER:")
 for f in folders:
     print(f)
+
+
+print("QUEUE")
+for q in Q:
+    print(q)

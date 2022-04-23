@@ -26,7 +26,6 @@
   {% include 'svgutil.html' %}
   <main>
     <!-- sidebar 給手機 -->
-    {% include 'mobileindex.html'%}
 
     <!-- for PC -->
     <div class="d-none d-lg-block h-100 w-25">
@@ -60,8 +59,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form action="{{ url_for('main.profile', name=g.user)}}" method="post" enctype=multipart/form-data
-                      id="UploadData">
+                    <form action="{{ url_for('main.profile', name=g.user['username'])}}" method="post" enctype=multipart/form-data>
                       <input type="button" id="loadFileXml" value="Video or Photo"
                         class="text-start btn btn-primary mb-3 w-100"
                         onclick="document.getElementById('video').click();" />
@@ -99,15 +97,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form action="{{url_for('main.create_new_folder', name=g.user)}}" method="post">
-                      {% for model in models %}
-                      <div class="form-check">
-                        <input name="{{ model }}" class="form-check-input" type="checkbox" id="{{ model }}">
-                        <label class="form-check-label text-body" for="{{ model }}">
-                          {{ model }}
-                        </label>
-                      </div>
-                      {% endfor %}
+                    <form action="{{url_for('main.create_new_folder', name=g.user)}}" method="post" enctype=multipart/form-data>
+                      <input type="button" id="loadFileXml" value="New Background"
+                        class="text-start btn btn-primary mb-3 w-100"
+                        onclick="document.getElementById('newBackground').click();" />
+                      <input type="file" class="d-none" id="newBackground" name="newBackground" multiple />
+
                       <input type="submit" class="d-none" id="new">
                     </form>
                   </div>
@@ -123,12 +118,12 @@
 
             {% for folder in folders %}
             <li>
-              <a href="{{ url_for('main.change_folder', name=g.user['username'], folder=folder)}}"
+              <a href="{{ url_for('main.change_folder', name=g.user['username'], folder=folder[0])}}"
                 class="nav-link text-white">
                 <svg class="bi me-2" width="16" height="16">
                   <use xlink:href="#speedometer2" />
                 </svg>
-                {{ folder }}
+                {{ folder[0] }}
               </a>
             </li>
             {% endfor %}
@@ -181,8 +176,8 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 {% for folder in folders %}
-                <input type="button" class="dropdown-item" value="{{folder}}" onclick="document.getElementById('{{folder}}_Folder').click()"/>
-                <input name="Move" id="{{folder}}_Folder" type="checkbox" class="d-none" value="{{folder}}_Folder" onclick="document.getElementById('Move').click()"/>
+                <input type="button" class="dropdown-item" value="{{folder[0]}}" onclick="document.getElementById('{{folder[0]}}_bg').click()"/>
+                <input name="Move" id="{{folder[0]}}_bg" type="checkbox" class="d-none" value="{{folder[1]}}" onclick="document.getElementById('Move').click()"/>
                 {% endfor %}
                 <input type="submit" id="Move" class="d-none" />
               </ul>

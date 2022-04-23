@@ -27,6 +27,19 @@ def get_db():
     return g.db
 
 '''
+取得 queue database
+'''
+def get_queue():
+    if 'queue' not in g:
+        g.queue = sqlite3.connect(
+            current_app.config['QUEUE'],
+            detect_types=sqlite3.PARSE_COLNAMES
+        )
+        g.queue.row_factory = sqlite3.Row
+    
+    return g.queue
+
+'''
 關閉 database
 '''
 def close_db(e=None):
@@ -40,10 +53,15 @@ def close_db(e=None):
 '''
 def init_db():
     db = get_db()
+    queue = get_queue()
 
     with current_app.open_resource('schema.sql') as f:
         db.executescript(f.read().decode('utf8'))
         db.commit()
+
+    with current_app.open_resource('queue_schema.sql') as f:
+        queue.executescript(f.read().decode('utf8'))
+        queue.commit()
 
 '''
 初始化 database
