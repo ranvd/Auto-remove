@@ -1,11 +1,17 @@
+from operator import mod
 import os
+from pyexpat import model
 import sys
 from flask import Flask, url_for, render_template
 from flask_bootstrap import Bootstrap
 import json
+import sqlite3
+import multiprocessing
+import sys
 
 
-
+print(sys.argv)
+# 這是 Flask 規定的函式名稱
 def create_app(Config_FileName = None):
     '''
     建立整個完整的網站，裡面會呼叫 blueprint 與其他輔助 function。
@@ -36,6 +42,17 @@ def create_app(Config_FileName = None):
     from . import db
     db.init_app(app)
 
+    '''
+    '''
+    # Model 服務
+    from . import model_process
+    if 'run' in sys.argv:
+        model_line =  multiprocessing.Process(
+            target=model_process.model_main_function,
+            args=[app.config['DATABASE'], sqlite3.PARSE_COLNAMES, sqlite3.Row])
+
+        model_line.start()
+    
     # 登入登出與驗證功能
     from . import auth
     app.register_blueprint(auth.bp)
@@ -44,6 +61,8 @@ def create_app(Config_FileName = None):
     app.register_blueprint(main_bp.bp)
     app.add_url_rule('/', endpoint='main.index') 
     # 上面這行在這裡其實沒有意義，只是提醒index在main_bp裡
+    
+    
 
     @app.route("/newindex")
     def newindex():

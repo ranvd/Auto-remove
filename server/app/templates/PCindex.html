@@ -59,7 +59,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form action="{{ url_for('main.profile', name=g.user['username'])}}" method="post" enctype=multipart/form-data>
+                    <form action="{{ url_for('main.profile', name=g.user['username'])}}" method="post"
+                      enctype=multipart/form-data>
                       <input type="button" id="loadFileXml" value="Video or Photo"
                         class="text-start btn btn-primary mb-3 w-100"
                         onclick="document.getElementById('video').click();" />
@@ -97,7 +98,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form action="{{url_for('main.create_new_folder', name=g.user)}}" method="post" enctype=multipart/form-data>
+                    <form action="{{url_for('main.create_new_folder', name=g.user)}}" method="post"
+                      enctype=multipart/form-data>
                       <input type="button" id="loadFileXml" value="New Background"
                         class="text-start btn btn-primary mb-3 w-100"
                         onclick="document.getElementById('newBackground').click();" />
@@ -176,8 +178,10 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 {% for folder in folders %}
-                <input type="button" class="dropdown-item" value="{{folder[0]}}" onclick="document.getElementById('{{folder[0]}}_bg').click()"/>
-                <input name="Move" id="{{folder[0]}}_bg" type="checkbox" class="d-none" value="{{folder[1]}}" onclick="document.getElementById('Move').click()"/>
+                <input type="button" class="dropdown-item" value="{{folder[0]}}"
+                  onclick="document.getElementById('{{folder[0]}}_bg').click()" />
+                <input name="Move" id="{{folder[0]}}_bg" type="checkbox" class="d-none" value="{{folder[1]}}"
+                  onclick="document.getElementById('Move').click()" />
                 {% endfor %}
                 <input type="submit" id="Move" class="d-none" />
               </ul>
@@ -194,9 +198,9 @@
                   video[0] }}</text>
               </svg>
 
-              <input type="checkbox" name="select" id={{video[1]}} value={{ video[1] }} class="btn-check"
+              <input type="checkbox" name="select" id="{{video[1]}}" value="{{ video[1] }}" class="btn-check"
                 autocomplete="off">
-              <label class="btn btn-outline-primary" for={{ video[1] }}>Select</label><br>
+              <label class="btn btn-outline-primary" for="{{ video[1] }}">Select</label><br>
             </div>
           </div>
           {% endfor %}
@@ -207,6 +211,16 @@
 
 
   </main>
+
+  <script>
+    var myTimeout = setTimeout(clear_cache, 500);
+    function clear_cache() {
+      {% for folder in folders %}
+      document.getElementById("{{folder[0]}}_bg").checked = false
+      {% endfor %}
+    }
+  </script>
+  <script src="{{ url_for('static', filename='index.js')}}"></script>
   <!--bootstrap js -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"

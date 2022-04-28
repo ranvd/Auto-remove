@@ -30,10 +30,11 @@ def index():
 @bp.route("/<string:name>", methods=('GET', 'POST'))
 @login_required
 def profile(name):
+    #print(request.method)
     if( request.method == "POST"):
         # 處理使用者上傳資料
-        print(request.form)
-        print(request.files)
+        #print(request.form)
+        #print(request.files)
         error = None
         video = request.files['video']
         background = request.files['background']
@@ -63,10 +64,13 @@ def profile(name):
                 (v_name, vsa_name, b_name, bsa_name, g.user['u_id'])
             )
             db.commit()
+
+        # 其實我不太清楚這裏面的原理，但這樣做可以防止input file tag的值還存在檔案裏面
+        return redirect(url_for('main.profile', name=g.user['username']))
     
     folder_list = GetUserFolder(g.user['u_id'])
     video_list = GetUserVideo(g.user['u_id'])
-    return render_template('PCindex.html', folders=folder_list, videos=video_list, models=AI_MODEL)
+    return render_template('PCindex.html', folders=folder_list, videos=video_list)
 
 
 @bp.route("/<string:name>/ceate_folder", methods=('GET', 'POST'))
@@ -85,6 +89,7 @@ def create_new_folder(name):
             error = "new Background is require"
 
         if (not error):
+            print("insert value")
             user_path = (current_app.config['UPLOAD_FOLDER'], g.user['username'])
             nB_path = os.path.join(*user_path, "newBackground", nBsa_name)
 
@@ -105,9 +110,7 @@ def create_new_folder(name):
 @login_required
 def moving_video(name):
     #TODO: 找b_name的方式應該可以優化
-
     if(request.method == "POST"):
-        #current_app.logger.info("from moving_video: {}".format(request.form))
         vsa_name = request.form.getlist('select')
         Moving_folder = request.form['Move']
         '''
@@ -115,16 +118,17 @@ def moving_video(name):
         # 依照v_name讀取database裡面相對應的b_name
         db = get_db()
         bsa_name = []
+        print(vsa_name)
         for name in vsa_name:
-            print(name)
             name = db.execute(
-                "SELECT bsa_name FROM video"
-                "WHERE author_id=(?) AND vsa_name=(?)",
-                (g.user['username'], name)
-            ).fetchone()['bsa_name']
-            print("After: ", name)
+                """SELECT bsa_name FROM video
+                WHERE author_id=(?) AND vsa_name=(?)""",
+                (g.user['u_id'], name)
+            ).fetchone()
+            name = list(name)[0]
             bsa_name.append(name)
-
+        
+        print(bsa_name)
         db.commit()
 
         # 將資料插到queue的database裡面
@@ -134,12 +138,14 @@ def moving_video(name):
             b_path = (current_app.config['UPLOAD_FOLDER'], g.user['username'], "backgrounds", b_name)
             nb_path = (current_app.config['UPLOAD_FOLDER'], g.user['username'], "newBackground", Moving_folder)
             
-            v_path = os.path.join(v_path)
-            b_path = os.path.join(b_path)
-
+            v_path = os.path.join(*v_path)
+            b_path = os.path.join(*b_path)
+            nb_path = os.path.join(*nb_path)
+            print(v_path)
+            print(b_path)
             queue.execute(
-                "INSERT INTO Queue (v_path, b_path, nb_path)"
-                "VALUES (?, ?, ?)",
+                """INSERT INTO Queue (v_path, b_path, nb_path)
+                VALUES (?, ?, ?)""",
                 (v_path, b_path, nb_path)
             )
         
