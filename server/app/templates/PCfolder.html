@@ -158,7 +158,7 @@
     <!-- 右邊的內容 -->
     <div class="album w-100 bg-light overflow-auto">
       <div class="container container-md  pt-5">
-        <form action="{{ url_for('main.moving_video', name=g.user['u_id']) }}" class="row row-cols-auto" method="post">
+        <div class="row row-cols-auto">
           <!-- 手機才看的到 -->
           <div class="col-12 mb-1 d-lg-none">
             <p>
@@ -170,24 +170,6 @@
             </p>
           </div>
 
-          <div class="col-12 mb-3">
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Move
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                {% for folder in folders %}
-                <input type="button" class="dropdown-item" value="{{folder[0]}}"
-                  onclick="document.getElementById('{{folder[0]}}_bg').click()" />
-                <input name="Move" id="{{folder[0]}}_bg" type="checkbox" class="d-none" value="{{folder[1]}}"
-                  onclick="document.getElementById('Move').click()" />
-                {% endfor %}
-                <input type="submit" id="Move" class="d-none" />
-              </ul>
-            </div>
-          </div>
-
           {% for video in videos %}
           <div class="col">
             <div class="card shadow-sm">
@@ -197,15 +179,12 @@
                 <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{
                   video[0] }}</text>
               </svg>
-
-              <input type="checkbox" name="select" id="{{video[1]}}" value="{{ video[1] }}" class="btn-check"
-                autocomplete="off">
-              <label class="btn btn-outline-primary" for="{{ video[1] }}">Select</label><br>
+              <a href="{{ url_for('main.download_video', name=g.user['username'], video=video[1])}}" class="btn btn-outline-primary">Download</a>
             </div>
           </div>
           {% endfor %}
 
-        </form>
+        </div>
       </div>
     </div>
 

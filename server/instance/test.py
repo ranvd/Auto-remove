@@ -21,6 +21,7 @@ w = cur.execute(
     ("com (1)1650728976.4051828.mp4",)
 ).fetchall()
 '''
+'''
 queue = sqlite3.connect('queue.sqlite')
 cur = queue.cursor()
 
@@ -29,8 +30,6 @@ Q = cur.execute(
 ).fetchall()
 
 
-cur.close()
-'''
 
 for ww in w:
     print(ww)
@@ -48,7 +47,9 @@ for f in folders:
     print(f)
 
 '''
+'''
 print("QUEUE")
 for q in Q:
     print(q)
-'''
+
+cur.close()

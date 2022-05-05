@@ -2,6 +2,9 @@ DROP TABLE IF EXISTS Queue;
 
 CREATE TABLE Queue (
   q_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author TEXT NOT NULL,
+  author_id TEXT NOT NULL,
+  v_name TEXT NOT NULL,
   v_path TEXT NOT NULL,
   b_path TEXT NOT NULL,
   nb_path TEXT NOT NULL,

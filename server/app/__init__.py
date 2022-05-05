@@ -25,7 +25,6 @@ def create_app(Config_FileName = None):
         QUEUE = os.path.join(app.instance_path, 'queue.sqlite'),
         UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
     )
-
     if(Config_FileName):
         try:
           app.config.from_pyfile(Config_FileName, silent=True)
@@ -49,7 +48,7 @@ def create_app(Config_FileName = None):
     if 'run' in sys.argv:
         model_line =  multiprocessing.Process(
             target=model_process.model_main_function,
-            args=[app.config['DATABASE'], sqlite3.PARSE_COLNAMES, sqlite3.Row])
+            args=[app.config])
 
         model_line.start()
     

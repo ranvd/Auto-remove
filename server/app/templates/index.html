@@ -44,75 +44,6 @@
 
           <div class="mb-auto">
             <ul class="nav nav-pills flex-column">
-              {% if g.user %}
-
-              <button onclick="document.getElementById('getFile').click()" class="text-start btn btn-primary mb-3">
-                <svg class="bi me-2" width="16" height="16">
-                  <use xlink:href="#home" />
-                </svg>
-                Upload
-              </button>
-              <form method="get">
-                <input name="file[]" type="file" class="d-none" id="getFile" onchange="this.form.submit();" multiple>
-              </form>
-
-              <!-- Button trigger modal -->
-              <button type="button" class="text-start btn btn-primary mb-3" data-bs-toggle="modal"
-                data-bs-target="#MobileModal">
-                <svg class="bi me-2" width="16" height="16">
-                  <use xlink:href="#home" />
-                </svg>
-                New
-              </button>
-
-              <!-- Vertically centered modal -->
-
-              <!-- Modal -->
-
-              <div class="modal fade" id="MobileModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title text-body" id="exampleModalLabel">Choice Your Folder Function</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <form id="SelectFunction" method="get">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-                          <label class="form-check-label text-body" for="flexCheckDefault">
-                            Matting
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                          <label class="form-check-label text-body" for="flexCheckChecked">
-                            風格轉換
-                          </label>
-                        </div>
-                      </form>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <input type="submit" form="SelectFunction" value="Apply" class="btn btn-primary">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {% for folder in folders %}
-              <li>
-                <a href="#" class="text-white">
-                  <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#speedometer2" />
-                  </svg>
-                  {{ folder }}
-                </a>
-              </li>
-              {% endfor %}
-
-              {% else %}
               <div class="mb-auto">
                 <div class="nav nav-pills flex-column">
                   <a href="{{ url_for('auth.login', name=g.user[username], folder='new') }}"
@@ -134,11 +65,7 @@
                   <hr>
                 </div>
               </div>
-              {% endif %}
-
               <hr>
-
-
             </ul>
           </div>
 
@@ -147,8 +74,8 @@
           <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none" id="dropdownUser1"
               data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="https://github.com/mdo.png" alt="NotFound" width="32" height="32" class="rounded-circle me-2">
-              <strong>mdo</strong>
+              <img src="https://avatars.githubusercontent.com/u/48400614?v=4" alt="NotFound" width="32" height="32" class="rounded-circle me-2">
+              <strong>none</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
               <li><a class="dropdown-item" href="#">New project...</a></li>
@@ -206,7 +133,7 @@
           <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
             id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="https://avatars.githubusercontent.com/u/48400614?v=4" alt="NotFound" width="32" height="32" class="rounded-circle me-2">
-            <strong>mdo</strong>
+            <strong>none</strong>
           </a>
           <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
             <li><a class="dropdown-item" href="#">New project...</a></li>
