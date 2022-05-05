@@ -1,4 +1,4 @@
 # Announce
-the model in server is the model modify form https://github.com/PeterL1n/BackgroundMattingV2.git
+the model in server is the modified model form https://github.com/PeterL1n/BackgroundMattingV2.git
 
 
