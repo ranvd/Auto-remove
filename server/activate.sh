@@ -1,5 +1,5 @@
 #! /bin/bash
 export FLASK_ENV=development
 flask init-db
-flask run
+flask run --host 0.0.0.0
 rm -r uploads
