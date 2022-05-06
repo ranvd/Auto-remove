@@ -170,6 +170,7 @@ def get_model(setting):
     model.load_state_dict(torch.load(setting['checkpoint_dir'], map_location=device), strict=False)
     return model
 
+
 '''
 
 '''
@@ -201,7 +202,7 @@ def model_infer_video(model, app_info, data):
     vid = VideoDataset(v_path)
     bgr = [Image.open(b_path).convert('RGB')]
     if(isVideo(nb_path)):
-        new_bgr = VideoDataset(nb_path, transforms=T.ToTensor())
+        new_bgr = VideoDataset(nb_path)
     elif(isImage(nb_path)):
         new_bgr = [Image.open(nb_path).convert('RGB')]
 
