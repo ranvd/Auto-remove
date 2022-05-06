@@ -226,6 +226,7 @@ def model_infer_video(model, app_info, data):
 
             reshape = T.Resize(src.shape[2:])
             tgt_bgr = reshape(tgt_bgr)
+            bgr = reshape(bgr)
 
             mask = get_mask(src)
 
@@ -263,6 +264,7 @@ def model_infer_image(model, app_info, data):
 
             reshape = T.Resize(src.shape[2:])
             tgt_bgr = reshape(tgt_bgr)
+            bgr = reshape(bgr)
 
             mask = get_mask(src)
 
