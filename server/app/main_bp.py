@@ -174,12 +174,12 @@ def change_folder(name, folder):
     video_list = GetUserVideo(g.user['u_id'], folder)
     return render_template('PCfolder.html', folders=folder_list, videos=video_list)
 
-@bp.route("/<string:name>/<string:video>")
+@bp.route("/download/<string:name>/<string:video>")
 @login_required
 def download_video(name, video):
-    print('downloaddddd')
+    print('download')
     path = (current_app.config["UPLOAD_FOLDER"], g.user['username'], "videos")
-    return send_from_directory(os.path.join(*path), video)
+    return send_from_directory(os.path.join(*path), video, as_attachment=True)
 
 # ------------------ utils --------------------
 

@@ -45,9 +45,10 @@ def create_app(Config_FileName = None):
     '''
     #json.dumps(dictionary, indent = 4)
     # Model 服務
+    from . import model_process
     if 'run' in sys.argv:
         d = dict(app.config)
-        with open('appconfig.json', 'w') as jsonfile:
+        with open('testing.json', 'w') as jsonfile:
             json.dump(d, jsonfile,default=str)
     
     # 登入登出與驗證功能

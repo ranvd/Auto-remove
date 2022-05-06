@@ -62,7 +62,6 @@ def model_main_function():
             print("Processing data: ", data)
             video_name = model_infer(model, app_info, data)
             #video_name = data['v_path'].split(os.sep)[-1] # 暫時
-
             db = sqlite3.connect(
                 app_info['DATABASE'],
                 detect_types=sqlite3.PARSE_COLNAMES
