@@ -225,6 +225,9 @@ def model_infer_video(model, app_info, data):
             bgr = bgr.to(device, non_blocking=True)
             tgt_bgr = tgt_bgr.to(device, non_blocking=True)
 
+            reshape = T.Resize(src.shape[2:])
+            tgt_bgr = reshape(tgt_bgr)
+
             mask = get_mask(src)
 
             pha, fgr, _, _, err, ref = model(src, bgr, mask)
@@ -259,6 +262,9 @@ def model_infer_image(model, app_info, data):
             bgr = bgr.to(device, non_blocking=True)
             tgt_bgr = tgt_bgr.to(device, non_blocking=True)
 
+            reshape = T.Resize(src.shape[2:])
+            tgt_bgr = reshape(tgt_bgr)
+            
             mask = get_mask(src)
 
             pha, fgr, _, _, err, ref = model(src, bgr, mask)
