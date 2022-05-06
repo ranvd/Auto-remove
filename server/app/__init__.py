@@ -45,16 +45,10 @@ def create_app(Config_FileName = None):
     '''
     #json.dumps(dictionary, indent = 4)
     # Model 服務
-    from . import model_process
     if 'run' in sys.argv:
         d = dict(app.config)
-        with open('testing.json', 'w') as jsonfile:
+        with open('appconfig.json', 'w') as jsonfile:
             json.dump(d, jsonfile,default=str)
-        model_line =  multiprocessing.Process(
-            target=model_process.model_main_function,
-            args=[app.config])
-
-        model_line.start()
     
     # 登入登出與驗證功能
     from . import auth

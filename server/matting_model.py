@@ -4,6 +4,7 @@ from time import sleep, time
 import sys
 import torch
 import shutil
+import json
 
 from torch import nn
 from torch.nn import functional as F
@@ -26,8 +27,9 @@ from BGMv2.inference_utils import HomographicAlignment
 # mask r-cnn
 from mask_rcnn import *
 
-def model_main_function(app_info):
-    
+def model_main_function():
+    with open('appconfig.json', 'r') as jsonfile:
+        app_info = json.load(jsonfile)
     # database connection
     print(app_info)
     # model
