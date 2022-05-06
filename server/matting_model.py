@@ -42,8 +42,8 @@ def model_main_function():
         "refine_kernel_size" : 3,
         "checkpoint_dir" : "position/of/checkpoint"
     }
-    #model = get_model(model_setting)
-    model = "none"
+    model = get_model(model_setting)
+    #model = "none"
     while(True):
         # dataset 連線
         queue = sqlite3.connect(
@@ -59,8 +59,9 @@ def model_main_function():
         waiting_queue = [ dict(result) for result in waiting_queue]
 
         for data in waiting_queue:
-            # video_name = model_infer(model, app_info, data)
-            video_name = data['v_path'].split(os.sep)[-1] # 暫時
+            print("Processing data: ", data)
+            video_name = model_infer(model, app_info, data)
+            #video_name = data['v_path'].split(os.sep)[-1] # 暫時
 
             db = sqlite3.connect(
                 app_info['DATABASE'],
