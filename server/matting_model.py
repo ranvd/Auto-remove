@@ -40,7 +40,7 @@ def model_main_function():
         "refine_sample_pixels" : 80_000,
         "refine_threshold" : 0.7,
         "refine_kernel_size" : 3,
-        "checkpoint_dir" : "position/of/checkpoint"
+        "checkpoint_dir" : os.path.join("BGMv2", "checkpoint", "epoch-9.pth")
     }
     model = get_model(model_setting)
     #model = "none"
@@ -264,7 +264,7 @@ def model_infer_image(model, app_info, data):
 
             reshape = T.Resize(src.shape[2:])
             tgt_bgr = reshape(tgt_bgr)
-            
+
             mask = get_mask(src)
 
             pha, fgr, _, _, err, ref = model(src, bgr, mask)
