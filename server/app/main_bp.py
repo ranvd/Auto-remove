@@ -16,7 +16,11 @@ from app.db import get_db, get_queue
 from .auth import login_required
 
 bp = Blueprint('main', __name__, url_prefix=None)
-AI_MODEL = ['Matting', 'StyleTransfer']
+User_Option = ['styletransfer', 'people']
+Option_Val = {
+    'styletransfer' : 1,
+    'people' : 2
+}
 
 
 @bp.route("/")
@@ -66,7 +70,7 @@ def profile(name):
             )
             db.commit()
         
-        flash(error)
+        #flash(error)
 
         # 其實我不太清楚這裏面的原理，但這樣做可以防止input file tag的值還存在檔案裏面
         return redirect(url_for('main.profile', name=g.user['username']))
@@ -80,6 +84,11 @@ def profile(name):
 @login_required
 def create_new_folder(name):
     if(request.method == 'POST'):
+        opt_val = 0
+        for opt in User_Option:
+            if(request.form[opt] == 'True'):
+                opt_val += Option_Val[opt]
+
         current_app.logger.info(request.files['newBackground'])
 
         newBackground = request.files['newBackground']
@@ -101,13 +110,13 @@ def create_new_folder(name):
             
             db = get_db()
             db.execute(
-                "INSERT INTO newbackground (nb_name, nbsa_name, author_id)"
-                "VALUES (?, ?, ?)",
-                (nB_name, nBsa_name, g.user['u_id'])
+                "INSERT INTO newbackground (nb_name, nbsa_name, author_id, opt)"
+                "VALUES (?, ?, ?, ?)",
+                (nB_name, nBsa_name, g.user['u_id'], opt_val)
             )
             db.commit()
 
-        flash(error)
+        #flash(error)
 
     return redirect(url_for('main.profile', name=g.user['username']))
 
@@ -134,7 +143,14 @@ def moving_video(name):
             bsa_name_list.append(row_info['bsa_name'])
             v_name_list.append(row_info['v_name'])
 
-        
+        opt_val = db.execute(
+            """SELECT opt FROM newbackground
+            WHERE nbsa_name=(?)
+            """,
+            (nbsa_name,)
+        ).fetchone()
+        opt_val = opt_val['opt']
+
         current_app.logger.info(bsa_name_list)
         db.commit()
 
@@ -152,9 +168,9 @@ def moving_video(name):
             current_app.logger.info(vsa_path)
             current_app.logger.info(bsa_path)
             queue.execute(
-                """INSERT INTO Queue (author, author_id, v_name, v_path, b_path, nb_path)
-                VALUES (?, ?, ?, ?, ?, ?)""",
-                (g.user['username'], g.user['u_id'], v_name, vsa_path, bsa_path, nbsa_path)
+                """INSERT INTO Queue (author, author_id, v_name, v_path, b_path, nb_path, opt)
+                VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                (g.user['username'], g.user['u_id'], v_name, vsa_path, bsa_path, nbsa_path, opt_val)
             )
         
         queue.commit()

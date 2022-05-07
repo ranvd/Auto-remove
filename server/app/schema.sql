@@ -28,6 +28,7 @@ CREATE TABLE newbackground (
   nb_name TEXT NOT NULL,
   nbsa_name TEXT NOT NULL,
   author_id INTEGER NOT NULL,
+  opt TEXT NOT NULL,
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (author_id) REFERENCES user (u_id)
 );

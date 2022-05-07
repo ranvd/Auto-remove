@@ -31,7 +31,7 @@ def model_main_function():
     with open('appconfig.json', 'r') as jsonfile:
         app_info = json.load(jsonfile)
     # database connection
-    print(app_info)
+    # print(app_info)
     # model
     model_setting = {
         "backbone" :'resnet50',
@@ -72,7 +72,7 @@ def model_main_function():
             db.execute(
                 """INSERT INTO video (v_name, vsa_name, b_name, bsa_name, author_id, nb_name) 
                 VALUES (?, ?, ?, ?, ?, ?)""",
-                (data['v_name'] ,video_name, 'none', 'none', data['author_id'], nb_name)
+                (data['v_name'], video_name, 'none', 'none', data['author_id'], nb_name)
             )
             db.commit()
             db.close()
@@ -198,6 +198,7 @@ def model_infer_video(model, app_info, data):
     v_path  = data['v_path']
     b_path = data['b_path']
     nb_path = data['nb_path']
+    opt = data['opt']
 
     vid = VideoDataset(v_path)
     bgr = [Image.open(b_path).convert('RGB')]
@@ -218,6 +219,12 @@ def model_infer_video(model, app_info, data):
     output_dir = os.path.join(*path)
     writer = VideoWriter(os.path.join(output_dir, vsa_name), vid.frame_rate, *shape)
     
+    # 決定要不要載入風格轉換模型
+    if(opt % 2 == 1):
+        STF_checkpoint = os.path.join("StyleTransfer","checkpoint","model_00001.pth")
+        STF_model = (torch.load(STF_checkpoint, map_location=lambda storage, loc: storage))
+        STF_model = STF_model.to(device).eval().type(torch.half)
+
     with torch.no_grad():
         for input_batch in tqdm(DataLoader(dataset, batch_size=1, pin_memory=True)):
             src, bgr, tgt_bgr = input_batch
@@ -233,6 +240,12 @@ def model_infer_video(model, app_info, data):
 
             pha, fgr, _, _, err, ref = model(src, bgr, mask)
             com = fgr * pha + tgt_bgr * (1-pha)
+            
+            if (opt % 2 == 1):
+                com = STF_model(com * 255)
+                com =  (com.clamp(-1,1) + 1) * 0.5
+            
+
             writer.add_batch(com)
 
     return vsa_name
@@ -243,6 +256,7 @@ def model_infer_image(model, app_info, data):
     v_path  = data['v_path']
     b_path = data['b_path']
     nb_path = data['nb_path']
+    opt = data['opt']
 
     vid = [Image.open(v_path).convert('RGB')]
     bgr = [Image.open(b_path).convert('RGB')]
@@ -257,6 +271,13 @@ def model_infer_image(model, app_info, data):
 
     path = (app_info['UPLOAD_FOLDER'], data['author'], 'videos')
     output_dir = os.path.join(*path)
+
+    # 決定要不要載入風格轉換模型
+    if(opt % 2 == 1):
+        STF_checkpoint = os.path.join("StyleTransfer","checkpoint","model_00001.pth")
+        STF_model = (torch.load(STF_checkpoint, map_location=lambda storage, loc: storage))
+        STF_model = STF_model.to(device).eval().type(torch.half)
+
     with torch.no_grad():
         for (src, bgr, tgt_bgr) in tqdm(DataLoader(dataset, batch_size=1, pin_memory=True)):
             src = src.to(device, non_blocking=True)
@@ -272,11 +293,14 @@ def model_infer_image(model, app_info, data):
             pha, fgr, _, _, err, ref = model(src, bgr, mask)
 
             com = fgr * pha + tgt_bgr * (1-pha)
+            if (opt % 2 == 1):
+                com = STF_model(com * 255)
+                com =  (com.clamp(-1,1) + 1) * 0.5
             
             Thread(target=writer, args=(com, os.path.join(output_dir, vsa_name))).start()
             
 
-    return True
+    return vsa_name
 
 
 

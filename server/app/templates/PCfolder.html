@@ -64,12 +64,12 @@
                       <input type="button" id="loadFileXml" value="Video or Photo"
                         class="text-start btn btn-primary mb-3 w-100"
                         onclick="document.getElementById('video').click();" />
-                      <input type="file" class="d-none" id="video" name="video" multiple />
+                      <input type="file" class="d-none" id="video" name="video" />
 
                       <input type="button" id="loadFileXml" value="Background"
                         class="text-start btn btn-primary mb-3 w-100"
                         onclick="document.getElementById('background').click();" />
-                      <input type="file" class="d-none" id="background" name="background" multiple />
+                      <input type="file" class="d-none" id="background" name="background" />
                       <input type="submit" class="d-none" id="upload">
                     </form>
                   </div>
@@ -103,7 +103,20 @@
                       <input type="button" id="loadFileXml" value="New Background"
                         class="text-start btn btn-primary mb-3 w-100"
                         onclick="document.getElementById('newBackground').click();" />
-                      <input type="file" class="d-none" id="newBackground" name="newBackground" multiple />
+                      <input type="file" class="d-none" id="newBackground" name="newBackground" />
+
+                      <div class="form-check text-dark">
+                        <input class="form-check-input" type="checkbox" name="styletransfer" value="True" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Default checkbox
+                        </label>
+                      </div>
+                      <div class="form-check text-dark">
+                        <input class="form-check-input" type="checkbox" name="people" value="True" id="flexCheckChecked" checked>
+                        <label class="form-check-label" for="flexCheckChecked">
+                          Checked checkbox
+                        </label>
+                      </div>
 
                       <input type="submit" class="d-none" id="new">
                     </form>
