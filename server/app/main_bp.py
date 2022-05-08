@@ -86,8 +86,11 @@ def create_new_folder(name):
     if(request.method == 'POST'):
         opt_val = 0
         for opt in User_Option:
-            if(request.form[opt] == 'True'):
-                opt_val += Option_Val[opt]
+            try:
+                if(request.form[opt] == 'True'):
+                    opt_val += Option_Val[opt]
+            except:
+                pass
 
         current_app.logger.info(request.files['newBackground'])
 
