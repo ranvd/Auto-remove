@@ -26,7 +26,7 @@
   {% include 'svgutil.html' %}
   <main>
     <!-- sidebar 給手機 -->
-
+    {% include 'mobileindex.html'%}
     <!-- for PC -->
     <div class="d-none d-lg-block h-100 w-25">
       <div class="d-flex flex-column p-3 text-white bg-dark h-100 w-100 me-0">
@@ -106,15 +106,16 @@
                       <input type="file" class="d-none" id="newBackground" name="newBackground" />
 
                       <div class="form-check text-dark">
-                        <input class="form-check-input" type="checkbox" name="styletransfer" value="True" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                          Default checkbox
+                        <input class="form-check-input" type="checkbox" name="styletransfer" value="True"
+                          id="styletransfer">
+                        <label class="form-check-label" for="styletransfer">
+                          Style transfer
                         </label>
                       </div>
                       <div class="form-check text-dark">
-                        <input class="form-check-input" type="checkbox" name="people" value="True" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                          Checked checkbox
+                        <input class="form-check-input" type="checkbox" name="people" value="True" id="people">
+                        <label class="form-check-label" for="people">
+                          People
                         </label>
                       </div>
 
@@ -150,16 +151,11 @@
         <div class="dropdown">
           <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
             id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://avatars.githubusercontent.com/u/48400614?v=4" alt="NotFound" width="32" height="32" class="rounded-circle me-2">
+            <img src="https://avatars.githubusercontent.com/u/48400614?v=4" alt="NotFound" width="32" height="32"
+              class="rounded-circle me-2">
             <strong>{{ g.user['username']}}</strong>
           </a>
           <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
             <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Sign out</a></li>
           </ul>
         </div>
@@ -192,7 +188,8 @@
                 <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{
                   video[0] }}</text>
               </svg>
-              <a href="{{ url_for('main.download_video', name=g.user['username'], video=video[1])}}" class="btn btn-outline-primary">Download</a>
+              <a href="{{ url_for('main.download_video', name=g.user['username'], video=video[1])}}"
+                class="btn btn-outline-primary">Download</a>
             </div>
           </div>
           {% endfor %}
