@@ -242,7 +242,7 @@ def model_infer_video(model, app_info, data):
             com = fgr * pha + tgt_bgr * (1-pha)
             
             if (opt % 2 == 1):
-                com = STF_model(com.to(torch.float16) * 255)
+                com = STF_model(com.to(torch.float16))
                 com =  (com.clamp(-1,1) + 1) * 0.5
             
 
@@ -295,7 +295,7 @@ def model_infer_image(model, app_info, data):
 
             com = fgr * pha + tgt_bgr * (1-pha)
             if (opt % 2 == 1):
-                com = STF_model(com.to(torch.float16) * 255)
+                com = STF_model(com.to(torch.float16))
                 com =  (com.clamp(-1,1) + 1) * 0.5
             
             Thread(target=writer, args=(com, os.path.join(output_dir, vsa_name))).start()
