@@ -220,6 +220,7 @@ def model_infer_video(model, app_info, data):
     writer = VideoWriter(os.path.join(output_dir, vsa_name), vid.frame_rate, *shape)
     
     # 決定要不要載入風格轉換模型
+    opt = int(opt)
     if(opt % 2 == 1):
         STF_checkpoint = os.path.join("StyleTransfer","checkpoint","model_00001.pth")
         STF_model = (torch.load(STF_checkpoint, map_location=lambda storage, loc: storage))
