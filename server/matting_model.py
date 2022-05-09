@@ -181,7 +181,6 @@ def isImage(type: str):
     return (type[-3:].lower() == 'jpg' or type[-3:].lower() == 'png')
 
 def model_infer(model, app_info, data):
-
     if(isVideo(data['v_path'])):
         return model_infer_video(model, app_info, data)
     elif(isImage(data['v_path'])):
@@ -274,6 +273,7 @@ def model_infer_image(model, app_info, data):
     output_dir = os.path.join(*path)
 
     # 決定要不要載入風格轉換模型
+    opt = int(opt)
     if(opt % 2 == 1):
         STF_checkpoint = os.path.join("StyleTransfer","checkpoint","model_00001.pth")
         STF_model = (torch.load(STF_checkpoint, map_location=lambda storage, loc: storage))
@@ -295,7 +295,7 @@ def model_infer_image(model, app_info, data):
 
             com = fgr * pha + tgt_bgr * (1-pha)
             if (opt % 2 == 1):
-                com = STF_model(com * 255)
+                com = STF_model(com.to(torch.float16) * 255)
                 com =  (com.clamp(-1,1) + 1) * 0.5
             
             Thread(target=writer, args=(com, os.path.join(output_dir, vsa_name))).start()

@@ -47,9 +47,12 @@ def profile(name):
 
         if(not v_name or not b_name):
             error = "Require both background and video."
-        elif(not AcceptedFile(v_name, b_name)):
-            print("file type error")
-            error = "File type incorrect."
+        elif(not AcceptedFile(v_name)):
+            print("source file type error")
+            error = "source file type incorrect."
+        elif(not AcceptedFile(b_name, accepted=["png", "jpg"])):
+            print("backgroung file type error")
+            error = "backgroung file type incorrect."
         
         if(not error):
             user_path = (current_app.config['UPLOAD_FOLDER'], g.user['username'])
@@ -228,8 +231,7 @@ def GetUserVideo(u_id, f_id=None): # f_id 是 nb_name 但 nb_name 對應的是�
     return [(dict(v)['v_name'], dict(v)['vsa_name']) for v in video_list]
         
 
-def AcceptedFile(*filename):
-    accepted = ['mp4', 'avi', 'png', 'jpg']
+def AcceptedFile(*filename, accepted=['mp4', 'avi', 'png', 'jpg']):
     for file in filename:
         print(file[-3:])
         if(file[-3:] not in accepted):
