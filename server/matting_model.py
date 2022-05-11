@@ -127,7 +127,7 @@ class ImageSequenceWriter:
 
 
 def writer(img, path):
-    img = to_pil_image(img.cpu())
+    img = to_pil_image(img[0].cpu())
     img.save(path)
 
 
