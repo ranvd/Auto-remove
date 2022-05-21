@@ -40,5 +40,11 @@ step 2.
 step 3.
 * run ML model by runing `matting_model.py`.
 
-# Caution
+## Caution
 * If you are in Linux, and runing `activate.sh`. This script will build the service on your real IP which I highly don't recommand.
+
+# Model weight
+* style transfer: https://drive.google.com/file/d/1JXPm0qKmOh6rV8HcvLEN5PZv7BmW_Zw0/view?usp=sharing
+  * put this weight under `/server/StyleTransfer/checkpoint`
+* matting: https://drive.google.com/file/d/1E1OQU20Z_yPMv5rtgSQrLhyDFTtvSWkm/view?usp=sharing
+  * put this weight under `/server/BGMv2/checkpoint`
