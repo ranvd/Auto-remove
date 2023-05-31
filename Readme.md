@@ -5,24 +5,23 @@ There are three ML model in this project.
 * Mask RCNN (segmentation model)
 
 ### matting model
-Matting model in server is modified from https://github.com/PeterL1n/BackgroundMattingV2.git
+Our matting model is modified from https://github.com/PeterL1n/BackgroundMattingV2.git
 ### style Transfer model
-Style Transfer model in server is the model from https://github.com/OndrejTexler/Few-Shot-Patch-Based-Training 
+Our Style Transfer model is from https://github.com/OndrejTexler/Few-Shot-Patch-Based-Training 
 ### Mask RCNN
-Mask RCNN model is using detectron2 from Facebook.
+We use detectron2, from Facebook, as our Mask RCNN model.
 https://detectron2.readthedocs.io/en/latest/tutorials/install.html
 
 # Description
-This project is NDHU undergraduate project. Our project name is **Robust automatic video matting model on website service**. In the Project we modified the BGMv2 model to our specific purpose and provide this matting service on website.
+This project is NDHU undergraduate project. Our project name is **Robust automatic video matting model on website service**. In the Project we modified the BGMv2 model into specific purpose and provide as a matting service on website.
 
-The server site is done by `Flask`, and ML model is on `Pytorch`.
+The back-end of this server is done by `Flask`, and ML model is implemented with `Pytorch`.
 
 # Requirement
 
 * GPU 4G(minimum, fit in some of the FHD resolution video)
 * GPU 8G(recommand)
 
-you **CAN NOT** install dependency simply by runing `pip install -r requirement.txt`.You need to find out how to install `detectron2` and `Pytorch` on there website. The website of `detectron2` is on the top.
 ```
 torch 1.10.1
 detectron2
